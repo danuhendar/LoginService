@@ -1,0 +1,13 @@
+[Unit]
+Description=LoginService
+
+[Service]
+WorkingDirectory=/root/IDMReporter/LoginService
+ExecStart=/usr/bin/java -Xms128m -jar LoginService.jar
+User=root
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
