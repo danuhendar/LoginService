@@ -961,7 +961,7 @@ public class IDMLogin {
                                             String res_task = "SECURITY_LOGIN";
                                             res_nik = Parser_COMMAND.replace("|", ",").split(",")[0];
                                             String res_pass = Parser_COMMAND.replace("|", ",").split(",")[1];
-                                            String type = "IPTIDAKTERDAFTAR";
+                                            String type = "  ";
                                             String identitas_login_from_remote_path = Parser_REMOTE_PATH;
                                             Object obj_remote = JSONValue.parse(identitas_login_from_remote_path);
                                             JSONParser parser = new JSONParser();
