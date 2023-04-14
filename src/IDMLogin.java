@@ -529,6 +529,8 @@ public class IDMLogin {
                      //System.out.println(i.next());
                  }
                  
+                 System.out.println("res : "+res);
+                 
             } catch (org.json.simple.parser.ParseException ex) {
                ex.printStackTrace();
                res_verifikasi = false;
@@ -544,6 +546,7 @@ public class IDMLogin {
     		gf.WriteLog("error_verifikasi", res, true);
     		//gf.WriteLog("error_verifikasi", content_error, true);
     		res_verifikasi = false;
+    		System.out.println("res : "+res);
     	}
     	
     	return res_verifikasi;
@@ -955,6 +958,7 @@ public class IDMLogin {
                                         //-- cek ip source vs ip master idmcommand --//
                                         
                                         Boolean hasil_verifikasi = isVerifikasiSuccess(Parser_CABANG,Parser_IP_ADDRESS);
+                                        System.out.println("hasil_verifikasi : "+hasil_verifikasi);
                                         //-- jika false, publish ke idmcommandV2Bot ke atasan ada akses mencurigakan dari ip yang tidak terdaftar di area anda --//
                                         if(hasil_verifikasi == false) {
                                         	//-- publish ke IDMCommandV2Bot --//
