@@ -608,7 +608,7 @@ public class IDMLogin {
     				+ "    					(SELECT CONTENT FROM m_struktur_jabatan WHERE ID > b.ID AND KODE =  LEFT(a.LOCATION,1) ORDER BY ID ASC LIMIT 0,1) AS JABATAN_ATASAN,\r\n"
     				+ "    				IFNULL((SELECT CONCAT(MAX(ADDTIME),'#',IP) AS LAST_LOGIN FROM "+nama_table_create+" WHERE TASK = 'LOGIN' AND CMD LIKE '"+nik_bawahan+"%' ORDER BY ROWID DESC LIMIT 0,1),':') AS LAST_LOGIN\r\n"
     				+ "    				\r\n"
-    				+ "    				FROM idm_org_structure a INNER JOIN m_struktur_jabatan b ON a.JABATAN=b.CONTENT\r\n"
+    				+ "    				FROM idm_org_structure a INNER JOIN m_struktur_jabatan b ON a.JABATAN=b.CONTENT AND LEFT(a.LOCATION,1)=b.KODE\r\n"
     				+ "    				) v\r\n"
     				+ "    				WHERE v.NIK = '"+nik_bawahan+"'\r\n"
     				+ "    				GROUP BY v.NIK\r\n"
@@ -784,7 +784,7 @@ public class IDMLogin {
     	                        
     	                        //gf.PublishMessageAndDocumenter(topic_dest,bytemessage,counter,res_message,0);
     	                        
-    	                        String topic_dest = "LOGIN/"+username+"/";
+    	                        String topic_dest = "LOGIN/RESPONSE/"+location+"/"+username+"/";
     	                        
     	                        MqttMessage message = new MqttMessage(bytemessage);
     	                        message.setQos(1);
@@ -906,7 +906,7 @@ public class IDMLogin {
             String res_pattern_command = get_pattern_command();
             String res_attr_db = get_attr_db();
             
-            String rtopic_command = "LOGIN/";
+            String rtopic_command = gf.en.getTopic().split(",")[0];
             System.out.println("SUBS : "+rtopic_command);
             client_transreport_primary.subscribe(rtopic_command,qos_message_command, new IMqttMessageListener() {
                 public void messageArrived (final String topic, final MqttMessage message) throws Exception {
@@ -965,7 +965,7 @@ public class IDMLogin {
                                             String res_task = "SECURITY_LOGIN";
                                             res_nik = Parser_COMMAND.replace("|", ",").split(",")[0];
                                             String res_pass = Parser_COMMAND.replace("|", ",").split(",")[1];
-                                            String type = "  ";
+                                            String type = "IPTIDAKTERDAFTAR";
                                             String identitas_login_from_remote_path = Parser_REMOTE_PATH;
                                             Object obj_remote = JSONValue.parse(identitas_login_from_remote_path);
                                             JSONParser parser = new JSONParser();
@@ -993,7 +993,7 @@ public class IDMLogin {
                         
             });  
             
-            String rtopic_updpass = "UPDPASSWORD/";
+            String rtopic_updpass = gf.en.getTopic().split(",")[1];
             System.out.println("SUBS : "+rtopic_updpass);
             client_transreport_primary.subscribe(rtopic_updpass,qos_message_command,new IMqttMessageListener() {
                 @Override
@@ -1047,7 +1047,7 @@ public class IDMLogin {
                 }
            });
             
-           String rtopic_security_setting_toko_baru = "REQ_SECURITY_SETTING/";
+           String rtopic_security_setting_toko_baru = gf.en.getTopic().split(",")[2];
            System.out.println("SUBS : "+rtopic_security_setting_toko_baru);
            client_transreport_primary.subscribe(rtopic_security_setting_toko_baru,qos_message_command,new IMqttMessageListener() {
                 @Override
